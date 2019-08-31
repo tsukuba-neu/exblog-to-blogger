@@ -1,0 +1,19 @@
+{
+  "name": "@tsukuba-neu/blog-takeout-feed",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "devDependencies": {
+    "ts-node": "^8.3.0",
+    "typescript": "^3.6.2"
+  },
+  "dependencies": {
+    "consola": "^2.10.1",
+    "minimist": "^1.2.0",
+    "xmlbuilder": "^13.0.2"
+  },
+  "private": true
+}

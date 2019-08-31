@@ -1,0 +1,14 @@
+{
+  "name": "@tsukuba-neu/blog-takeout-util",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^3.6.2"
+  },
+  "private": true
+}

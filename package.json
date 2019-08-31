@@ -1,0 +1,22 @@
+{
+  "name": "@tsukuba-neu/blog-takeout",
+  "version": "0.0.0",
+  "description": "Takeout resources on your blogs",
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": "https://github.com/tsukuba-neu/blog-takeout",
+  "author": "Kazumi Inada <hello@nandenjin.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext js,ts --ignore-path .gitignore ."
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^6.2.2",
+    "eslint-config-prettier": "^6.1.0",
+    "prettier": "^1.18.2"
+  }
+}
