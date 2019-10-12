@@ -24,9 +24,9 @@ const out: string = args.o || null
 
 // 画像データ引っ越し先ホスト・パス名
 let imgHost: string = args.imgHost || null
-if(imgHost && !imgHost.match(/\/$/)) imgHost = imgHost + '/'
+if (imgHost && !imgHost.match(/\/$/)) imgHost = imgHost + '/'
 
-async function fetch (url: string, count: number = 0): Promise<Post[]> {
+async function fetch(url: string, count = 0): Promise<Post[]> {
   consola.log('📄 ' + url)
 
   // ページの取得
@@ -36,7 +36,7 @@ async function fetch (url: string, count: number = 0): Promise<Post[]> {
     normalizeWhitespace: true
   })
 
-  if(!url.match(/^https:\/\/neu0\.exblog\.jp\/([0-9]+)\//)) {
+  if (!url.match(/^https:\/\/neu0\.exblog\.jp\/([0-9]+)\//)) {
     throw new Error('Unknown url format')
   }
 
@@ -51,7 +51,7 @@ async function fetch (url: string, count: number = 0): Promise<Post[]> {
     const href = el.attribs.href
     const img = $(`a[href^='${href}'] img`)
     const src = img.attr('src')
-    if(src) {
+    if (src) {
       images.push(src)
       if (imgHost) img.attr('src', src.replace(srcBase, imgHost))
       img.removeAttr('width')
@@ -61,18 +61,20 @@ async function fetch (url: string, count: number = 0): Promise<Post[]> {
   })
 
   // - 画像のダウンロードと保存
-  await Promise.all(images.map(async img => {
-    consola.log('-> 📷 ' + img)
-    const { data } = await axios.get(img, { responseType: 'arraybuffer' })
-    const outPath = path.join(process.cwd(), out, img.replace(srcBase, ''))
-    const dir = path.dirname(outPath)
-    try{
-      await fs.stat(dir)
-    } catch(e) {
-      await fs.mkdir(dir, { recursive: true })
-    }
-    await fs.writeFile(outPath, data)
-  }))
+  await Promise.all(
+    images.map(async img => {
+      consola.log('-> 📷 ' + img)
+      const { data } = await axios.get(img, { responseType: 'arraybuffer' })
+      const outPath = path.join(process.cwd(), out, img.replace(srcBase, ''))
+      const dir = path.dirname(outPath)
+      try {
+        await fs.stat(dir)
+      } catch (e) {
+        await fs.mkdir(dir, { recursive: true })
+      }
+      await fs.writeFile(outPath, data)
+    })
+  )
 
   // scriptタグの除去
   $('script').remove()
@@ -91,22 +93,28 @@ async function fetch (url: string, count: number = 0): Promise<Post[]> {
   post.title = title
   post.date = postDate
   post.content = content
-  if(category.length > 0) post.categories.push(category)
+  if (category.length > 0) post.categories.push(category)
 
   // コメントのパース
-  const commentNames = $('.COMMENT .COMMENT_TAIL b').toArray().map(e => cheerio(e).text())
-  const commentDates = $('.COMMENT .COMMENT_TAIL').toArray().map(e => {
-    const text = cheerio(e).text()
-    if(!text.match(/([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]+:[0-9]+)/)) {
-      throw new Error('Unknown date format for comment: ' + text)
-    }
-    return new Date(RegExp.$1)
-  })
-  const commentBodies = $('.COMMENT .COMMENT_BODY').toArray().map(e => {
-    const $ = cheerio.load(e, { decodeEntities: false })
-    $('* div').remove()
-    return chomp($('*').html())
-  })
+  const commentNames = $('.COMMENT .COMMENT_TAIL b')
+    .toArray()
+    .map(e => cheerio(e).text())
+  const commentDates = $('.COMMENT .COMMENT_TAIL')
+    .toArray()
+    .map(e => {
+      const text = cheerio(e).text()
+      if (!text.match(/([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]+:[0-9]+)/)) {
+        throw new Error('Unknown date format for comment: ' + text)
+      }
+      return new Date(RegExp.$1)
+    })
+  const commentBodies = $('.COMMENT .COMMENT_BODY')
+    .toArray()
+    .map(e => {
+      const $ = cheerio.load(e, { decodeEntities: false })
+      $('* div').remove()
+      return chomp($('*').html())
+    })
 
   for (let i = 0; i < commentNames.length; i++) {
     const comment = new Comment()
@@ -118,11 +126,11 @@ async function fetch (url: string, count: number = 0): Promise<Post[]> {
 
   posts.push(post)
 
-  if(nextUrl){
+  if (nextUrl) {
     if (count + 1 < limit) {
-      if(interval >= 500) consola.info('Waiting interval...')
+      if (interval >= 500) consola.info('Waiting interval...')
       await delay(interval)
-      posts.push(...await fetch(nextUrl, count + 1))
+      posts.push(...(await fetch(nextUrl, count + 1)))
     } else {
       consola.info('Count reached')
     }
@@ -131,12 +139,14 @@ async function fetch (url: string, count: number = 0): Promise<Post[]> {
   return posts
 }
 
-(async function() {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+;(async function() {
   const result = JSON.stringify(await fetch(entryPoint), null, 2)
   if (out) {
-    await fs.writeFile(path.resolve(out, 'output.json'), result, { encoding: 'utf-8' })
+    await fs.writeFile(path.resolve(out, 'output.json'), result, {
+      encoding: 'utf-8'
+    })
   } else {
     process.stdout.write(result)
   }
 })()
-

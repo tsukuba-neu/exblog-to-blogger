@@ -14,6 +14,7 @@ module.exports = {
     es6: true
   },
   rules: {
+    '@typescript-eslint/no-var-requires': 'off',
     'prettier/prettier': [
       'error',
       {
