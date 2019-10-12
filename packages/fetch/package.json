@@ -1,5 +1,5 @@
 {
-  "name": "@tsukuba-neu/blog-takeout-fetch",
+  "name": "@tsukuba-neu/exblog-to-blogger-fetch",
   "version": "0.0.0",
   "main": "index.js",
   "license": "MIT",

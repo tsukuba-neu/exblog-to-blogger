@@ -5,7 +5,7 @@ import axios from 'axios'
 import cheerio from 'cheerio'
 const consola = require('consola')
 
-import { chomp, delay } from '@tsukuba-neu/blog-takeout-util'
+import { chomp, delay } from '@tsukuba-neu/exblog-to-blogger-util'
 import { Comment, Post } from './models'
 
 const args = parseArgs(process.argv.slice(2))

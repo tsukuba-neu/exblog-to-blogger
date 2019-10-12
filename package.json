@@ -1,5 +1,5 @@
 {
-  "name": "@tsukuba-neu/blog-takeout",
+  "name": "@tsukuba-neu/exblog-to-blogger",
   "version": "0.0.0",
   "description": "Takeout resources on your blogs",
   "workspaces": [
