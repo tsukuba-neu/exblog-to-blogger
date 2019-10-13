@@ -2,8 +2,11 @@ import * as path from 'path'
 import { promises as fs } from 'fs'
 import parseArgs from 'minimist'
 import axios from 'axios'
+import * as retryAxios from 'retry-axios'
 import cheerio from 'cheerio'
 const consola = require('consola')
+
+retryAxios.attach()
 
 import { chomp, delay } from '@tsukuba-neu/exblog-to-blogger-util'
 import { Comment, Post } from './models'
@@ -150,3 +153,9 @@ async function fetch(url: string, count = 0): Promise<Post[]> {
     process.stdout.write(result)
   }
 })()
+
+process.addListener('unhandledRejection', e => {
+  consola.error('Unhandled Rejection')
+  consola.error(e)
+  process.exit(1)
+})
