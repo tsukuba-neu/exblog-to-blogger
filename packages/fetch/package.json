@@ -15,7 +15,7 @@
     "axios": "^0.19.0",
     "cheerio": "^1.0.0-rc.3",
     "consola": "^2.10.1",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.2",
     "retry-axios": "^1.0.1"
   },
   "private": true
