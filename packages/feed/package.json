@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "consola": "^2.10.1",
-    "minimist": "^1.2.2",
+    "minimist": "^1.2.3",
     "xmlbuilder": "^13.0.2"
   },
   "private": true
